@@ -13,7 +13,9 @@ export class CategoriesService {
   ) {}
 
   create(createCategoryDto: CreateCategoryDto) {
-    return 'This action adds a new category';
+    const category = new Category();
+    category.name = createCategoryDto.name;
+    return this.categoryRepository.save(category);
   }
 
   findAll() {
