@@ -30,11 +30,14 @@ export class CategoriesService {
     return category;
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return this.categoryRepository.update(id, updateCategoryDto);
+  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
+    const category = await this.findOne(id);
+    category.name = updateCategoryDto.name;
+    return await this.categoryRepository.save(category);
   }
 
-  remove(id: number) {
-    return this.categoryRepository.delete(id);
+  async remove(id: number) {
+    const category = await this.findOne(id);
+    return await this.categoryRepository.remove(category);
   }
 }
