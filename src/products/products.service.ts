@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { FindManyOptions, In, Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { Category } from 'src/categories/entities/category.entity';
 
@@ -10,15 +10,15 @@ import { Category } from 'src/categories/entities/category.entity';
 export class ProductsService {
 
   constructor(
-  @InjectRepository(Product) private readonly productRepository: Repository<Product>,
-  @InjectRepository(Category) private readonly categoryRepository: Repository<Category>
-  ) {}
+    @InjectRepository(Product) private readonly productRepository: Repository<Product>,
+    @InjectRepository(Category) private readonly categoryRepository: Repository<Category>
+  ) { }
 
   async create(createProductDto: CreateProductDto) {
-    const category = await this.categoryRepository.findOneBy({id: createProductDto.categoryId});
-    
+    const category = await this.categoryRepository.findOneBy({ id: createProductDto.categoryId });
+
     if (!category) {
-      let errors : string[] = [];
+      let errors: string[] = [];
       errors.push('Category not found');
       throw new NotFoundException(errors);
     }
@@ -28,19 +28,27 @@ export class ProductsService {
       category
     })
   }
-  async findAll() {
-    const [ data, total ] = await this.productRepository.findAndCount({
+  async findAll(categoryId: number | null) {
+    const options: FindManyOptions<Product> = {
       relations: {
         category: true
       },
       order: {
         id: 'DESC'
       }
-    });
-    return {
-      data,
-      total
+    };
+    if (categoryId) {
+      options.where = {
+        category: {
+          id: categoryId
+        }
+      }
     }
+    const [products, total] = await this.productRepository.findAndCount(options);
+    return {
+      products,
+      total
+    };
   }
 
   findOne(id: number) {
