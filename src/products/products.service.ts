@@ -28,14 +28,15 @@ export class ProductsService {
       category
     })
   }
-  async findAll(categoryId: number | null) {
+  async findAll(categoryId: number | null, take: number) {
     const options: FindManyOptions<Product> = {
       relations: {
         category: true
       },
       order: {
         id: 'DESC'
-      }
+      },
+      take
     };
     if (categoryId) {
       options.where = {
