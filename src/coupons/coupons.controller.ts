@@ -31,7 +31,7 @@ export class CouponsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', IdValidationPipe) id: string) {
     return this.couponsService.remove(+id);
   }
 }
