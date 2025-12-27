@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -23,9 +23,18 @@ export class TransactionsService {
 
       for (const contents of createTransactionDto.contents) {
         const product = await transactionEntityManager.findOneBy(Product, { id: contents.productId } );
+        
+        const errors: string[] = [];
+
         if (!product) {
-          throw new Error(`Product with id ${contents.productId} not found`);
+          errors.push(`Product with id ${contents.productId} not found`);
+          throw new NotFoundException(errors);
         } 
+        if (contents.quantity > product.inventory) {
+          errors.push(`Insufficient inventory for product with id ${contents.productId}`);
+          throw new BadRequestException(errors);
+        }
+
         product.inventory -= contents.quantity;
 
         //Create transaction contents instance 
