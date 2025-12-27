@@ -17,3 +17,5 @@ export const CategorySchema = z.object({
 export const CategoryWithProductsResponseSchema = CategorySchema.extend({
     products: z.array(ProductSchema)
 });
+
+export type Product = z.infer<typeof ProductSchema>;
