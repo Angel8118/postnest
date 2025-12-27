@@ -4,10 +4,10 @@ import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction, TransactionContents } from './entities/transaction.entity';
 import { Between, FindManyOptions, Repository } from 'typeorm';
-import { Product } from 'src/products/entities/product.entity';
+import { Product } from '../products/entities/product.entity';
 import { endOfDay, isValid, parseISO, startOfDay } from 'date-fns';
 import { start } from 'repl';
-import { CouponsService } from 'src/coupons/coupons.service';
+import { CouponsService } from '../coupons/coupons.service';
 import { tr } from 'date-fns/locale';
 
 @Injectable()
@@ -49,7 +49,7 @@ export class TransactionsService {
           throw new BadRequestException(errors);
         }
 
-        product.inventory -= contents.quantity;
+        product.inventory -= contents.quantity; 
 
         //Create transaction contents instance 
         const transactionContent = new TransactionContents();
