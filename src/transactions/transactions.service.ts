@@ -99,7 +99,17 @@ export class TransactionsService {
     return `This action updates a #${id} transaction`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} transaction`;
+  async remove(id: number) {
+    const transaction = await this.findOne(id);
+
+    for (const content of transaction.contents) {
+      const transactionContents = await this.transactionContentsRepository.findOneBy({id: content.id});
+      if (transactionContents) {
+        await this.transactionContentsRepository.remove(transactionContents);
+      }
+    }
+
+    await this.transactionsRepository.remove(transaction);
+    return `Transaction with id ${id} has been removed`;
   }
 }
