@@ -1,4 +1,4 @@
-import { CategoryWithProductsResponseSchema } from "@/app/src/schemas";
+import { CategoryWithProductsResponseSchema } from "@/src/schemas";
 import ProductCard from "@/components/products/ProductCard";
 
 type Params = Promise<{ categoryId: string }>
