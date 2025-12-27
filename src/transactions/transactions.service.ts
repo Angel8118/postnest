@@ -12,26 +12,40 @@ export class TransactionsService {
     @InjectRepository(Transaction) private readonly transactionsRepository: Repository<Transaction>,
     @InjectRepository(TransactionContents) private readonly transactionContentsRepository: Repository<TransactionContents>,
     @InjectRepository(Product) private readonly productsRepository: Repository<Product>,
-  ) {}
+  ) { }
 
 
   async create(createTransactionDto: CreateTransactionDto) {
-    const transaction = new Transaction();
-    transaction.total = createTransactionDto.total;
-    await this.transactionsRepository.save(transaction);
 
-    for (const contents of createTransactionDto.contents) {
-      const product = await this.productsRepository.findOneBy({id: contents.productId});
-      if (!product) {
-        throw new Error(`Product with id ${contents.productId} not found`);
+    await this.productsRepository.manager.transaction(async (transactionEntityManager) => {
+      const transaction = new Transaction();
+      transaction.total = createTransactionDto.total;
+
+      for (const contents of createTransactionDto.contents) {
+        const product = await transactionEntityManager.findOneBy(Product, { id: contents.productId } );
+        if (!product) {
+          throw new Error(`Product with id ${contents.productId} not found`);
+        } 
+        product.inventory -= contents.quantity;
+
+        //Create transaction contents instance 
+        const transactionContent = new TransactionContents();
+        transactionContent.price = contents.price;
+        transactionContent.product = product;
+        transactionContent.quantity = contents.quantity;
+        transactionContent.transaction = transaction;
+        await transactionEntityManager.save(transaction);
+        await transactionEntityManager.save(transactionContent);
+
+        await transactionEntityManager.save(TransactionContents,{
+          ...contents,
+          transaction,
+          product
+        })
       }
-      product.inventory -= contents.quantity;
-      await this.transactionContentsRepository.save({
-        ...contents,
-        transaction,
-        product 
-      })
-    }
+    })
+
+
 
     return "Sale saved Successful";
   }
