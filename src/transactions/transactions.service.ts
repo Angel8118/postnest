@@ -102,8 +102,15 @@ export class TransactionsService {
   async remove(id: number) {
     const transaction = await this.findOne(id);
 
-    for (const content of transaction.contents) {
-      const transactionContents = await this.transactionContentsRepository.findOneBy({id: content.id});
+    for (const contents of transaction.contents) {
+      const product = await this.productsRepository.findOneBy({id: contents.product.id});
+      if (!product) {
+        throw new NotFoundException(`Product with id ${contents.product.id} not found`);
+      }
+      product.inventory += contents.quantity;
+      await this.productsRepository.save(product);
+
+      const transactionContents = await this.transactionContentsRepository.findOneBy({id: contents.id});
       if (transactionContents) {
         await this.transactionContentsRepository.remove(transactionContents);
       }
