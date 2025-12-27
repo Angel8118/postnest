@@ -8,6 +8,7 @@ import { Product } from 'src/products/entities/product.entity';
 import { endOfDay, isValid, parseISO, startOfDay } from 'date-fns';
 import { start } from 'repl';
 import { CouponsService } from 'src/coupons/coupons.service';
+import { tr } from 'date-fns/locale';
 
 @Injectable()
 export class TransactionsService {
@@ -28,7 +29,10 @@ export class TransactionsService {
 
       if (createTransactionDto.coupon) {
         const coupon = await this.couponService.applyCoupon(createTransactionDto.coupon);
-        
+        const discount = (coupon.percentage / 100) * total;
+        transaction.discount = discount;
+        transaction.coupon = coupon.name;
+        transaction.total -= discount;
       }
 
       for (const contents of createTransactionDto.contents) {
