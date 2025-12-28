@@ -1,6 +1,17 @@
+import { CategoryResponseSchema } from "@/src/schemas";
 import Logo from "./Logo";
+import { ca } from "zod/locales";
+
+async function getCategories() {  
+    const url = `${process.env.API_URL}/categories`;
+    const res = await fetch(url, { next: { revalidate: 60 } });
+    const json = await res.json();
+    const categories = CategoryResponseSchema.parse(json);
+    return categories;
+}
 
 export default async function MainNav() {
+    const categories = await getCategories();
   return (
     <header className="px-10 py-5 bg-gray-700 flex flex-col md:flex-row justify-between ">
         <div className="flex justify-center">
