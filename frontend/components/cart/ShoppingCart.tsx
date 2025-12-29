@@ -1,10 +1,23 @@
-
+"use client"
+import { useStore } from "@/src/store"
+import ShoppingCartItem from "./ShoppingCartItem"
 
 export default function ShoppingCart() {
+
+  const content = useStore((state) => state.contents)
+
   return (
     <>
         <h2 className="font-bold text-4xl text-gray-900">Resumen de Ventas</h2>
 
+        <ul
+          role="list" className="mt-6 divide-y divide-gray-200 border-t border-gray-200 text-sm font-medium text-gray-500">
+          {content.map((item) => (
+            <ShoppingCartItem 
+            key={item.productId} 
+            item={item} />
+          ))}
+        </ul>
     </>
   )
 }
