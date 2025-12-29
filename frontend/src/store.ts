@@ -8,6 +8,7 @@ interface Store {
     addToCart: (product: Product) => void
     updateQuantity: (id: Product["id"], quantity: number) => void
     removeFromCart: (id: Product["id"]) => void
+    calculateTotal: () => void
 }
 
 export const useStore = create<Store>()(devtools((set, get) => ({
@@ -36,6 +37,8 @@ export const useStore = create<Store>()(devtools((set, get) => ({
         set(() => ({
             contents
         }))
+
+        get().calculateTotal()
     },
     updateQuantity: (id, quantity) => {
         const contents = get().contents.map(item => item.productId === id ? {
@@ -45,11 +48,19 @@ export const useStore = create<Store>()(devtools((set, get) => ({
         set(() => ({
             contents
         }))
+        get().calculateTotal()
     },
     removeFromCart: (id) => {
         const contents = get().contents.filter(item => item.productId !== id)
         set(() => ({
             contents
+        }))
+        get().calculateTotal()
+    },
+    calculateTotal: () => {
+        const total = get().contents.reduce((total, item) => total + item.price * item.quantity, 0)
+        set(() => ({
+            total
         }))
     }
 })))

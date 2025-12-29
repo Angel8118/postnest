@@ -1,10 +1,12 @@
 "use client"
 import { useStore } from "@/src/store"
 import ShoppingCartItem from "./ShoppingCartItem"
+import Amount from "./Amount"
 
 export default function ShoppingCart() {
 
   const contents = useStore((state) => state.contents)
+  const total = useStore((state) => state.total)
 
   return (
     <>
@@ -20,6 +22,12 @@ export default function ShoppingCart() {
             item={item} />
           ))}
         </ul>
+        <dl className="space-y-6  border-t border-gray-300 py-6 text-sm font-medium text-gray-500">
+          <Amount
+            label="Total a pagar"
+            amount={total}
+          />
+        </dl>
       </>
     ) : (
       <h2 className="text-center font-bold text-4xl text-gray-900">El carrito está vacío</h2>
