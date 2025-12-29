@@ -14,6 +14,7 @@ export default function ProductCard({ product }: { product: Product}) {
                     alt={`Image of ${product.name}`}
                     width={400}
                     height={600}
+                    priority
                 />
                 <div className="p-3 space-y-2">
                     <h3 className="text-xl font-bold text-gray-600">{product.name}</h3>

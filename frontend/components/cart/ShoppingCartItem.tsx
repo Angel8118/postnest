@@ -16,6 +16,7 @@ export default function ShoppingCartItem({item}: {item: CartItem}) {
                 alt={`Imagen del Producto ${item.name}`}
                 width={100}
                 height={100}
+                priority
                 />
             </div>
             <div className="flex-auto space-y-2">
