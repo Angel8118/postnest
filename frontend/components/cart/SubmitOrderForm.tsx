@@ -6,16 +6,16 @@ import { useStore } from "@/src/store"
 export default function SubmitOrderForm() {
 
     const total = useStore((state) => state.total)
-    const coupon = useStore((state) => state.coupon)
+    const coupon = useStore((state) => state.coupon.name)
     const contents = useStore((state) => state.contents)
     const order = {
         total,
         coupon,
         contents
     }
-    console.log(order)
+    const submitOrderWithData = submitOrder.bind(null, order)
 
-    const [state, dispatch] = useActionState(submitOrder, {
+    const [state, dispatch] = useActionState(submitOrderWithData, {
         errors : [],
         success: ''
     })
