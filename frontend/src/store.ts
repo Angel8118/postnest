@@ -13,13 +13,19 @@ interface Store {
     calculateTotal: () => void
     applyCoupon: (couponName: string) => Promise<void>
     applyDiscount: () => void
+    clearOrder: () => void
 }
 
-export const useStore = create<Store>()(devtools((set, get) => ({
+const initialState = {
     total: 0,
     discount: 0,
     contents: [],
     coupon: { name: "", message: "", percentage: 0 },
+}
+
+export const useStore = create<Store>()(devtools((set, get) => ({
+    ...initialState,
+    
     addToCart: (product) => {
         const { id: productId, categoryId, ...data } = product
         let contents: ShoppingCart[] = []
@@ -61,6 +67,9 @@ export const useStore = create<Store>()(devtools((set, get) => ({
         set(() => ({
             contents
         }))
+        if (!get().contents.length) {
+            get().clearOrder()
+        }
         get().calculateTotal()
     },
     calculateTotal: () => {
@@ -90,5 +99,8 @@ export const useStore = create<Store>()(devtools((set, get) => ({
         const discount = (subtotalAmount * get().coupon.percentage) / 100
         const total = subtotalAmount - discount
         set(() => ({ total, discount }) )
+    },
+    clearOrder: () => {
+        set(() => ({ ...initialState }))
     }
 })))
