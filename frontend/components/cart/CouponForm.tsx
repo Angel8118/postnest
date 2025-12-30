@@ -4,12 +4,14 @@ import { useStore } from "@/src/store"
 export default function CouponForm() {
 
     const applyCoupon = useStore((state) => state.applyCoupon)
+    const coupon = useStore((state) => state.coupon)
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         const formData = new FormData(e.currentTarget)
         const couponName = formData.get('coupon_name')?.toString()!
+        if (!couponName.length) return
         await applyCoupon(couponName)
 
     }
@@ -33,6 +35,9 @@ export default function CouponForm() {
                 value='Canjear'
             />
           </form>
+          {coupon.message? (
+            <p className="py-4 text-center text-sm font-bold">{coupon.message}</p>
+          ) : null}
     </>
   )
 }
