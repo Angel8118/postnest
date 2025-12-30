@@ -50,6 +50,16 @@ export const OrderSchema = z.object({
   contents: z.array(OrderContentSchema).min(1, {message: 'El Carrito no puede ir vacio'})
 })
 
+/** Success / Error Response */
+export const SuccessResponseSchema = z.object({
+  message: z.string()
+})
+export const ErrorResponseSchema = z.object({
+  message: z.array(z.string()),
+  error: z.string(),
+  statusCode: z.number()
+})
+
 export type Product = z.infer<typeof ProductSchema>;
 export type ShoppingCart = z.infer<typeof ShoppingCartContentsSchema>;
 export type CartItem = z.infer<typeof ShoppingCartContentsSchema>;

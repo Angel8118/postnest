@@ -19,6 +19,7 @@ export default function SubmitOrderForm() {
         errors : [],
         success: ''
     })
+    console.log(state)
   return (
     <>
     <form action={dispatch}>

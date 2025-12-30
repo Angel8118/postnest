@@ -70,7 +70,7 @@ export class TransactionsService {
 
 
 
-    return "Sale saved Successful";
+    return {message: "Sale saved Successful"};
   }
 
   findAll(transactionDate?: string) {
