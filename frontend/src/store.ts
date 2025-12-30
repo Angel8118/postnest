@@ -65,6 +65,10 @@ export const useStore = create<Store>()(devtools((set, get) => ({
         }))
     },
     applyCoupon: async (couponName: string) => {
-
+        const req = await fetch('/coupons/api', {
+            method: 'POST',
+            body: JSON.stringify({ couponName: couponName }),
+        })
+        const json = await req.json()
     }
 })))
