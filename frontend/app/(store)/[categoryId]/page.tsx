@@ -6,7 +6,9 @@ type Params = Promise<{ categoryId: string }>
 
 async function getProducts(categoryId:string) {
     const url = `${process.env.API_URL}/categories/${categoryId}?products=true`;
-    const req = await fetch(url, {cache: 'no-store'});
+    const req = await fetch(url, {cache: 'no-store',
+        next: { tags: ['products-by-category'] }
+    });
     const json = await req.json();
     if (!req.ok) {
         redirect('/')
