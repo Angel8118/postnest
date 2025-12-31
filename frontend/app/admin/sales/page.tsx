@@ -1,5 +1,6 @@
 import TransactionFilter from "@/components/transactions/TransactionFilter";
 import Heading from "@/components/ui/Heading";
+import { getSalesByDate } from "@/src/api";
 import { QueryClient, dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function SalesPage() {
@@ -9,7 +10,7 @@ export default async function SalesPage() {
   const formattedDate = today.toISOString().split('T')[0];
   await queryClient.prefetchQuery({
     queryKey: ['sales', formattedDate],
-    queryFn: async () => {}
+    queryFn: async () => getSalesByDate(formattedDate)
   })
   console.log(formattedDate);
 
