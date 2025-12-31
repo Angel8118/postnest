@@ -13,7 +13,6 @@ export default function TransactionFilter() {
     const [date, setDate] = useState<Value>(new Date());
 
     const formattedDate = format(date as Date, 'yyyy-MM-dd');
-    console.log(formattedDate);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-10">

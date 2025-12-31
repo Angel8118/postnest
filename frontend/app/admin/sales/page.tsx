@@ -5,7 +5,13 @@ import { QueryClient, dehydrate, HydrationBoundary } from "@tanstack/react-query
 export default async function SalesPage() {
 
   const queryClient = new QueryClient();
-  
+  const today = new Date();
+  const formattedDate = today.toISOString().split('T')[0];
+  await queryClient.prefetchQuery({
+    queryKey: ['sales', formattedDate],
+    queryFn: async () => {}
+  })
+  console.log(formattedDate);
 
   return (
     <>
