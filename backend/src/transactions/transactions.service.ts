@@ -59,12 +59,7 @@ export class TransactionsService {
         transactionContent.transaction = transaction;
         await transactionEntityManager.save(transaction);
         await transactionEntityManager.save(transactionContent);
-
-        await transactionEntityManager.save(TransactionContents,{
-          ...contents,
-          transaction,
-          product
-        })
+        await transactionEntityManager.save(product);
       }
     })
 
