@@ -25,11 +25,12 @@ export default function TransactionFilter() {
     const total = data?.reduce((total, transaction) => total + Number(transaction.total), 0) || 0;
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-10">
-            <div> 
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-10 relative items-start">
+            <div className="lg:sticky lg:top-15"> 
                 <Calendar
                     value={date}
                     onChange={setDate}
+                    locale="es"
                 />
             </div>
 
