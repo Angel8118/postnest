@@ -71,7 +71,7 @@ export const ContentsSchema = z.object({
     id: z.number(),
     total: z.string(),
     transactionDate: z.string(),
-    discount: z.string(),
+    discount: z.string().nullable(),
     coupon: z.string().nullable(),
     contents: z.array(ContentsSchema)
   })
@@ -82,3 +82,4 @@ export type Product = z.infer<typeof ProductSchema>;
 export type ShoppingCart = z.infer<typeof ShoppingCartContentsSchema>;
 export type CartItem = z.infer<typeof ShoppingCartContentsSchema>;
 export type Coupon = z.infer<typeof CouponResponseSchema>;
+export type Transaction = z.infer<typeof TransactionResponseSchema>;
