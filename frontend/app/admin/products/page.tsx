@@ -40,6 +40,7 @@ export default async function ProductsPage({searchParams}: {searchParams: Search
       products={products}
     />
     <Pagination 
+    baseUrl="/admin/products"
     page={+page}
     totalPages={totalPages}
     />
