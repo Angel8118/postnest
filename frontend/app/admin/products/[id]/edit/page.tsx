@@ -1,11 +1,26 @@
 import EditProductForm from "@/components/products/EditProductForm";
 import ProductForm from "@/components/products/ProductForm";
 import Heading from "@/components/ui/Heading";
-import Head from "next/head";
+import { ProductResponseSchema } from "@/src/schemas";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
+async function getProduct(id: string) {
+    const url = `${process.env.API_URL}/products/${id}`;
+    const req = await fetch(url);
+    const json = await req.json();
+    if (!req.ok) {
+        notFound();
+    }
+    const product = ProductResponseSchema.parse(json);
+    return product;
+}
 
-export default function EditProductPage() {
+type Params = Promise<{id: string}>;
+
+export default async function EditProductPage({ params }: { params: { id: string } }) {
+    const { id } = await params;
+    const product = await getProduct(id);
   return (
     <>
     <Link href="/admin/products?page=1"
