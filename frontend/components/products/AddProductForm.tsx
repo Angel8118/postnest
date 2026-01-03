@@ -1,10 +1,11 @@
 "use client"
 
-export default function AddProductForm() {
+import ProductForm from "./ProductForm"
+
+export default function AddProductForm({children}: {children?: React.ReactNode}) {
   return (
-    <form action="">
-
-
+    <form className="space-y-5">
+        {children}
         <input type="submit"
         className="rounded bg-green-400 font-bold py-2 w-full cursor-pointer"
         value="Agregar Producto" />

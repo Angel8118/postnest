@@ -1,4 +1,5 @@
 import AddProductForm from "@/components/products/AddProductForm";
+import ProductForm from "@/components/products/ProductForm";
 import Heading from "@/components/ui/Heading";
 import Link from "next/dist/client/link";
 
@@ -10,7 +11,9 @@ export default function NewProductPage() {
       Volver
     </Link>
     <Heading>Nuevo Producto</Heading>
-    <AddProductForm />
+    <AddProductForm>
+        <ProductForm />
+    </AddProductForm>
     </>
   )
 }
