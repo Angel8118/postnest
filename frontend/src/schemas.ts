@@ -9,6 +9,13 @@ export const ProductSchema = z.object({
   categoryId: z.number()
 })
 
+export const CreateProductSchema = z.object({
+  name: z.string().min(1, { message: 'Product name is required' }),
+  price: z.coerce.number().positive({ message: 'Product price must be a positive number' }),
+  inventory: z.coerce.number().int().positive({ message: 'Inventory must be a positive whole number' }),
+  categoryId: z.coerce.number().int().positive({ message: 'Category must be a valid number' })
+})
+
 export const ProductResponseSchema = z.object({
   products: z.array(ProductSchema),
   total: z.number()

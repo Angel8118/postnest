@@ -1,8 +1,7 @@
 "use server"
 
-import { ProductResponseSchema } from "@/src/schemas";
-import { error } from "console";
-import { success } from "zod";
+import { ErrorResponseSchema, CreateProductSchema } from "@/src/schemas";
+
 
 type ActionStateType = {
     errors: string[]
@@ -11,11 +10,11 @@ type ActionStateType = {
 
 export async function addProduct(prevState: ActionStateType, formData: FormData) {
     
-    const product = ProductResponseSchema.safeParse({
+    const product = CreateProductSchema.safeParse({
         name: formData.get('name'),
-        price: Number(formData.get('price')),
-        inventory: Number(formData.get('inventory')),
-        categoryId: Number(formData.get('categoryId')),
+        price: formData.get('price'),
+        inventory: formData.get('inventory'),
+        categoryId: formData.get('categoryId'),
     })
     if (!product.success) {
         return {
@@ -24,9 +23,26 @@ export async function addProduct(prevState: ActionStateType, formData: FormData)
         }
     }
 
+    const url = `${process.env.API_URL}/products`;
+    const req = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(product.data),
+    });
+    const json = await req.json();
+    if (!req.ok) {
+        const errors = ErrorResponseSchema.parse(json);
+        return {
+            errors: errors.message.map(issue => issue),
+            success: ''
+        }
+    }
+
     return {
         errors: [],
-        success: ''
+        success: 'Producto agregado correctamente'
     }
 
 }
