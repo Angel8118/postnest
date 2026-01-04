@@ -29,3 +29,5 @@ export function getImagePath(image: string) {
     return `/img/${image}`
   }
 }
+
+export const isAvailable = (inventory: number) => inventory > 0;
