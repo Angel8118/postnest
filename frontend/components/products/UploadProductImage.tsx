@@ -1,6 +1,15 @@
 "use client"
 
+import { useCallback } from "react"
 import { useDropzone } from "react-dropzone"
+
+const onDrop = useCallback(async (files : File[]) => {
+    const formData = new FormData();
+    files.forEach((file) => {
+        formData.append('file', file);
+    })
+    
+}, [])
 
 export default function UploadProductImage() {
 
@@ -8,7 +17,9 @@ export default function UploadProductImage() {
         accept: {
             'image/jpeg': ['.jpg', '.jpeg'],
             'image/png': ['.png']
-        }
+        },
+        onDrop,
+        maxFiles: 1
     })
 
   return (
