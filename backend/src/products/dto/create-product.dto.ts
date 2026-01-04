@@ -5,6 +5,9 @@ export class CreateProductDto {
     @IsString({ message: 'Product name must be a string' })
     name: string;
 
+    @IsNotEmpty({ message: 'Product image is required' })
+    image: string;
+
     @IsNotEmpty({ message: 'Product price is required' })
     @IsNumber({ maxDecimalPlaces: 2 }, { message: 'Product price must be a number' })
     price: number;
