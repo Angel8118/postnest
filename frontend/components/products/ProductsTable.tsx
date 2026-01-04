@@ -1,5 +1,5 @@
 import { Product } from "@/src/schemas";
-import { formatCurrency } from "@/src/utils";
+import { formatCurrency, getImagePath } from "@/src/utils";
 import Image from "next/image";
 import Link from "next/link";
 import DeleteProductForm from "./DeleteProductForm";
@@ -38,7 +38,7 @@ export default function ProductsTable({ products }: { products: Product[] }) {
                                     <tr key={product.id}>
                                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                             <Image
-                                                src={`/img/${product.image}`}
+                                                src={getImagePath(product.image)}
                                                 alt={`Imagen del producto: ${product.name}`}
                                                 width={120}
                                                 height={120}
