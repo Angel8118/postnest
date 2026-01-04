@@ -1,13 +1,20 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "res.cloudinary.com" },
+    ],
+  },
   async rewrites() {
-    return [
-      {
-        source: "/img/:path*",
-        destination: "http://localhost:3000/img/:path*",
-      },
-    ];
+    return {
+      beforeFiles: [
+        {
+          source: "/img/:path*",
+          destination: "http://localhost:3000/img/:path*",
+        },
+      ],
+    };
   },
 };
 
