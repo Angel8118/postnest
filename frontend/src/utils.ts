@@ -22,12 +22,17 @@ export function isValidPage(value: number) {
 }
 
 export function getImagePath(image: string) {
-  const cloudinaryBaseUrl = 'https://res.cloudinary.com/'
-  if (image.startsWith(cloudinaryBaseUrl)) {
+  const backendBaseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '')
+
+  if (image.startsWith('http')) {
     return image;
-  } else {
-    return `/img/${image}`
   }
+
+  if (backendBaseUrl) {
+    return `${backendBaseUrl}/img/${image}`
+  }
+
+  return `/img/${image}`
 }
 
 export const isAvailable = (inventory: number) => inventory > 0;
